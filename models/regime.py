@@ -34,7 +34,7 @@ class HMMRegime:
         K   = self.n_states
 
         # Initialise: sort by return magnitude
-        kmeans_labels = (np.abs(obs) > np.abs(obs).median()).astype(int)
+        kmeans_labels = (np.abs(obs) > np.median(np.abs(obs))).astype(int)
         self.mu    = np.array([obs[kmeans_labels == k].mean() for k in range(K)])
         self.sigma = np.array([obs[kmeans_labels == k].std() + 1e-6 for k in range(K)])
         self.A     = np.array([[0.95, 0.05], [0.05, 0.95]])

@@ -351,3 +351,26 @@ def _build_app():
                 fig_dist, fig_heat, fig_corr, fig_trades, metrics_div)
 
     return app
+
+
+# ── Standalone entry point ────────────────────────────────────────────────────
+
+if __name__ == "__main__":
+    import os, warnings
+    warnings.filterwarnings("ignore")
+
+    print("=" * 60)
+    print("  Quant Research Dashboard — loading data…")
+    print("=" * 60)
+
+    # Run simulation inline
+    from run_simulation import load_prices, run_all, print_summary, BacktestConfig
+
+    tickers = ["SPY", "QQQ", "GLD", "TLT", "EEM"]
+    prices  = load_prices(tickers, years=5)
+    cfg     = BacktestConfig(initial_capital=100_000, commission_bps=5)
+    results = run_all(prices, cfg)
+    summary = print_summary(results)
+
+    print(f"\n  Dashboard → http://127.0.0.1:8052\n")
+    launch(prices, results, summary, port=8052)
