@@ -56,6 +56,13 @@ def kpi(label, value, color=WHITE, sub=""):
     )
 
 
+def hex_rgba(hex_color: str, alpha: float = 0.15) -> str:
+    """Convert '#rrggbb' to 'rgba(r,g,b,alpha)' — Plotly-safe."""
+    h = hex_color.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return f"rgba({r},{g},{b},{alpha})"
+
+
 def empty_fig(msg="No data"):
     fig = go.Figure(layout={**BASE_LAYOUT})
     fig.add_annotation(text=msg, xref="paper", yref="paper",
@@ -201,7 +208,7 @@ def _build_app():
             fig_dd.add_trace(go.Scatter(x=dd.index, y=dd.values,
                                          fill="tozeroy", name=name,
                                          line=dict(color=colors[name], width=1),
-                                         fillcolor=f"{colors[name]}22"))
+                                         fillcolor=hex_rgba(colors[name], 0.15)))
         fig_dd.update_yaxes(ticksuffix="%")
 
         # ── Ranking bar chart ──────────────────────────────────────────────

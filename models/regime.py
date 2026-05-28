@@ -57,8 +57,8 @@ class HMMRegime:
 
             # M-step
             self.pi = gamma[0]
-            self.A  = xi.sum(axis=0) / xi.sum(axis=(0, 2), keepdims=True).T + 1e-300
-            self.A /= self.A.sum(axis=1, keepdims=True)
+            xi_sum  = xi.sum(axis=0)                        # (K, K)
+            self.A  = (xi_sum + 1e-300) / (xi_sum.sum(axis=1, keepdims=True) + 1e-300)
             for k in range(K):
                 g = gamma[:, k]
                 self.mu[k]    = (g * obs).sum() / g.sum()
